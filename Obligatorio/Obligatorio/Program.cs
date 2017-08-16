@@ -143,8 +143,6 @@ namespace Obligatorio
 
 
         }
-
-        //nuestra hermana
     }
 
 }
