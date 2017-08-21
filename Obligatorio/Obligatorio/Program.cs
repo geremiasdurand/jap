@@ -13,6 +13,10 @@ namespace Obligatorio
             MenuPrincipal();
         }
 
+        public static List<Producto> ListaProductos = new List<Producto>();
+        public static List<Factura> ListaFacturas = new List<Factura>();
+        public static List<Cliente> ListaClientes = new List<Cliente>();
+
         public static void MenuPrincipal()
         {
             try
@@ -127,14 +131,25 @@ namespace Obligatorio
 
         public static void Listar_Cliente()
         {
-
-
-
+            Console.WriteLine("=============== LISTADO DE CLIENTES ===============");
+            Console.WriteLine("");
+            foreach(Cliente c in ListaClientes)
+            {
+                Console.WriteLine("CI/ROT: {0} ,Nombre: {1} ,Domicilio: {2} ,FechaDeNacimiento: {3}",c.CIRUT,c.Nombre,c.Domicilio,c.FechaDeNacimiento);
+            }
+            Console.WriteLine("");
+            Console.WriteLine("===================================================");
         }
         public static void Listar_Factura()
         {
-
-
+            Console.WriteLine("=============== LISTADO DE FACTURAS ===============");
+            Console.WriteLine("");
+            foreach (Factura c in ListaFacturas)
+            {
+                Console.WriteLine("CI/ROT: {0} ,Nombre: {1} ,Domicilio: {2} ,FechaDeNacimiento: {}");
+            }
+            Console.WriteLine("");
+            Console.WriteLine("===================================================");
 
         }
         public static void Listar_Producto()
