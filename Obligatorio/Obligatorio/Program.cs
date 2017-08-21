@@ -16,6 +16,7 @@ namespace Obligatorio
         public static List<Producto> ListaProductos = new List<Producto>();
         public static List<Factura> ListaFacturas = new List<Factura>();
         public static List<Cliente> ListaClientes = new List<Cliente>();
+        public static int IDProducto = 0;
 
         public static void MenuPrincipal()
         {
@@ -112,7 +113,66 @@ namespace Obligatorio
 
         public static void Registrar_Cliente()
         {
+            try
+            {
+                string nombreCliente;
+                do
+                {
+                    Console.WriteLine("Ingrese el NOMBRE del Nombre");
+                    nombreCliente = Console.ReadLine();
+                }
+                while (nombreCliente == string.Empty);
 
+                string cirutCliente;
+                bool buscar = false;
+                do
+                {
+                    Console.WriteLine("Ingrese la CI o RUT del Cliente");
+                    cirutCliente = Console.ReadLine();
+                    if (cirutCliente != string.Empty && int.TryParse(cirutCliente, out int preciotemp))
+                    {
+                        if (BuscarCliente(int.Parse(cirutCliente))==null)
+                        {
+                            buscar = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ya hay un Cliente registrado con esa CI/RUT");
+                        }
+                    }
+                }
+                while (!buscar);
+
+                Console.WriteLine("Ingrese el CANTIDAD de la Memoria");
+                string cantidadMemoria = Console.ReadLine();
+
+                string domicilioCliente;
+                do
+                {
+                    Console.WriteLine("Ingrese el DOMICILIO del Cliente");
+                    domicilioCliente = Console.ReadLine();
+                }
+                while (domicilioCliente == string.Empty);
+
+                string fechadenacimientoCliente;
+                do
+                {
+                    Console.WriteLine("Ingrese la CI o RUT del Cliente");
+                    fechadenacimientoCliente = Console.ReadLine();
+                }
+                while (fechadenacimientoCliente == string.Empty || !DateTime.TryParse(fechadenacimientoCliente, out DateTime fechatemp));
+
+                Cliente NuevoCliente = new Cliente();
+                NuevoCliente.Nombre = nombreCliente;
+                NuevoCliente.CIRUT = int.Parse(cirutCliente);
+                NuevoCliente.Domicilio = domicilioCliente;
+                NuevoCliente.FechaDeNacimiento = DateTime.Parse(fechadenacimientoCliente);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadLine();
+            }
 
 
         }
@@ -126,28 +186,45 @@ namespace Obligatorio
         {
             try
             {
-                Console.WriteLine("Ingrese el NOMBRE del Producto");
-                string nombreProducto = Console.ReadLine();
+                string nombreProducto;
+                do
+                {
+                    Console.WriteLine("Ingrese el NOMBRE del Producto");
+                    nombreProducto = Console.ReadLine();
+                }
+                while (nombreProducto != string.Empty);
 
-                Console.WriteLine("Ingrese la MARCA del Producto");
-                string marcaProducto = Console.ReadLine();
+                string marcaProducto;
+                do
+                {
+                    Console.WriteLine("Ingrese la MARCA del Producto");
+                    marcaProducto = Console.ReadLine();
+                }
+                while (marcaProducto != string.Empty);
 
                 string precioProducto;
+                int preciotemp;
                 do
                 {
                     Console.WriteLine("Ingrese el PRECIO del Producto");
                     precioProducto = Console.ReadLine();
                 }
-                while (!int.TryParse(precioProducto, out int preciotemp));
+                while (precioProducto != string.Empty && !int.TryParse(precioProducto, out preciotemp) && preciotemp > 0);
 
-                Console.WriteLine("Ingrese el CANTIDAD de la Memoria");
-                string cantidadMemoria = Console.ReadLine();
-
+                string cantidadMemoria;
+                do
+                {
+                    Console.WriteLine("Ingrese el CANTIDAD de la Memoria");
+                    cantidadMemoria = Console.ReadLine();
+                }
+                while (cantidadMemoria != string.Empty);
 
                 Producto NuevoProducto = new Producto();
                 NuevoProducto.Nombre = nombreProducto;
                 NuevoProducto.Marca = marcaProducto;
                 NuevoProducto.PrecioPorUnidad = int.Parse(precioProducto);
+                NuevoProducto.Id = IDProducto;
+                IDProducto++;
             }
             catch (Exception ex)
             {
@@ -191,6 +268,18 @@ namespace Obligatorio
             }
             Console.WriteLine("");
             Console.WriteLine("===================================================");
+        }
+
+        public static Cliente BuscarCliente(int cirut)
+        {
+            foreach(Cliente c in ListaClientes)
+            {
+                if (c.CIRUT == cirut)
+                {
+                    return c;
+                }
+            }
+            return null;
         }
     }
 
