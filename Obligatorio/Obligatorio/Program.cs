@@ -124,9 +124,38 @@ namespace Obligatorio
         }
         public static void Registrar_Producto()
         {
+            try
+            {
+                Console.WriteLine("Ingrese el NOMBRE del Producto");
+                string nombreProducto = Console.ReadLine();
+
+                Console.WriteLine("Ingrese la MARCA del Producto");
+                string marcaProducto = Console.ReadLine();
+
+                string precioProducto;
+                do
+                {
+                    Console.WriteLine("Ingrese el PRECIO del Producto");
+                    precioProducto = Console.ReadLine();
+                }
+                while (!int.TryParse(precioProducto, out int preciotemp));
+
+                Console.WriteLine("Ingrese el CANTIDAD de la Memoria");
+                string cantidadMemoria = Console.ReadLine();
 
 
-
+                Producto NuevoProducto = new Producto();
+                NuevoProducto.Nombre = nombreProducto;
+                NuevoProducto.Marca = marcaProducto;
+                NuevoProducto.PrecioPorUnidad = int.Parse(precioProducto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadLine();
+            }
+            Console.WriteLine("================ PRODUCTO AGREGADO ================");
+            Console.ReadLine();
         }
 
         public static void Listar_Cliente()
@@ -158,8 +187,6 @@ namespace Obligatorio
 
 
         }
-
-        //nuestra hermana
     }
 
 }
