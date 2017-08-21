@@ -164,7 +164,7 @@ namespace Obligatorio
             Console.WriteLine("");
             foreach(Cliente c in ListaClientes)
             {
-                Console.WriteLine("CI/ROT: {0} ,Nombre: {1} ,Domicilio: {2} ,FechaDeNacimiento: {3}",c.CIRUT,c.Nombre,c.Domicilio,c.FechaDeNacimiento);
+                Console.WriteLine("CI/RUT: {0} ,Nombre: {1} ,Domicilio: {2} ,FechaDeNacimiento: {3}",c.CIRUT,c.Nombre,c.Domicilio,c.FechaDeNacimiento);
             }
             Console.WriteLine("");
             Console.WriteLine("===================================================");
@@ -173,9 +173,9 @@ namespace Obligatorio
         {
             Console.WriteLine("=============== LISTADO DE FACTURAS ===============");
             Console.WriteLine("");
-            foreach (Factura c in ListaFacturas)
+            foreach (Factura f in ListaFacturas)
             {
-                Console.WriteLine("CI/ROT: {0} ,Nombre: {1} ,Domicilio: {2} ,FechaDeNacimiento: {}");
+                Console.WriteLine("Nombre Comprador: {0} ,CI/RUT: {1} ,Monto A Pagar: {2}",f.Cliente.Nombre,f.Cliente.CIRUT,f.MontoTotal);
             }
             Console.WriteLine("");
             Console.WriteLine("===================================================");
@@ -183,10 +183,17 @@ namespace Obligatorio
         }
         public static void Listar_Producto()
         {
-
-
-
+            Console.WriteLine("=============== LISTADO DE PRODUCTOS ===============");
+            Console.WriteLine("");
+            foreach (Producto p in ListaProductos)
+            {
+                Console.WriteLine("Id: {0} ,Nombre: {1} ,Marca: {2} ,Precio: {3}", p.Id, p.Nombre, p.Marca, p.PrecioPorUnidad);
+            }
+            Console.WriteLine("");
+            Console.WriteLine("===================================================");
         }
     }
+
+  
 
 }
