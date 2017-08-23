@@ -26,14 +26,20 @@ namespace Obligatorio
                 do
                 {
                     Console.Clear();
-                    Console.WriteLine("1- Registros\n2- Listados");
+                    Console.WriteLine("1- Registros\n2- Listados\n3- Salir");
                     int.TryParse(Console.ReadLine(), out Entrada);
                     if (Entrada == 1)
                     {
                         MenuRegistro();
                     }
                     else if (Entrada == 2)
-                    { MenuListado(); }
+                    {
+                        MenuListado();
+                    }else if(Entrada == 3)
+                    {
+                        //para que finalize el programa
+                        Entrada = 1;
+                    }
                 }
                 while (Entrada != 1 && Entrada != 2);
             }
@@ -250,9 +256,16 @@ namespace Obligatorio
         {
             Console.WriteLine("=============== LISTADO DE FACTURAS ===============");
             Console.WriteLine("");
-            foreach (Factura f in ListaFacturas)
+            if (ListaFacturas.Count > 0)
             {
-                Console.WriteLine("Nombre Comprador: {0} ,CI/RUT: {1} ,Monto A Pagar: {2}",f.Cliente.Nombre,f.Cliente.CIRUT,f.MontoTotal);
+                foreach (Factura f in ListaFacturas)
+                {
+                    Console.WriteLine("Nombre Comprador: {0} ,CI/RUT: {1} ,Monto A Pagar: {2}", f.Cliente.Nombre, f.Cliente.CIRUT, f.MontoTotal);
+                }
+            }
+            else
+            {
+                Console.WriteLine("No hay ninguna Factura registrada en el sistema.");
             }
             Console.WriteLine("");
             Console.WriteLine("===================================================");
