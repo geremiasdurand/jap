@@ -178,9 +178,86 @@ namespace Obligatorio
         }
         public static void Registrar_Factura()
         {
+            try
+            {
+                DateTime fechaFactura = DateTime.Now;
+
+                Cliente cliente = new Cliente();
+                string clienteFactura;
+                bool buscar = false;
+                do
+                {
+                    Console.WriteLine("Ingrese la CI o RUT del Cliente");
+                    clienteFactura = Console.ReadLine();
+                    if (clienteFactura != string.Empty && int.TryParse(clienteFactura, out int clientetemp))
+                    {
+                        cliente = BuscarCliente(int.Parse(clienteFactura));
+                        if (cliente != null)
+                        {
+                            buscar = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("No existe un cliente con esa CI/RUT");
+                        }
+                    }
+                }
+                while (!buscar);
+
+                List<Producto> ProductosEnFactura = new List<Producto>();
+                string idproductoFactura;
+                bool salir = false;
+                do
+                {
+                    Console.WriteLine("Ingrese el ID de los productos");
+                    idproductoFactura = Console.ReadLine();
+                    if (idproductoFactura == string.Empty)
+                    {
+                        salir = true;
+                    }
+                    else
+                    {
+                        string cantidad;
+                        int cantidadtemp;
+                        do
+                        {
+                            Console.WriteLine("Ingrese cuantas veces quiere agregar este producto");
+                            cantidad = Console.ReadLine();
+                        }
+                        while (cantidad != string.Empty && !int.TryParse(cantidad, out cantidadtemp) && cantidadtemp > 0);
+                        Producto ProductoAdd = BuscarIdProducto(idproductoFactura);
+                        if (ProductoAdd != null)
+                        {
+                            for (int i = 0; i < int.Parse(cantidad); i++)
+                            {
+                                ProductosEnFactura.Add(ProductoAdd);
+                            }
+                        }
+                    }
+                }
+                while (!salir);
+
+                int PrecioTotal = 0;
+                foreach (var P in ProductosEnFactura)
+                {
+                    PrecioTotal += P.PrecioPorUnidad;
+                }
 
 
-
+                Factura NuevaFactura = new Factura();
+                NuevaFactura.Cliente = cliente;
+                NuevaFactura.Fecha = fechaFactura;
+                NuevaFactura.MontoTotal = PrecioTotal;
+                NuevaFactura.ListaProductos = ProductosEnFactura;
+                }
+                
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadLine();
+            }
+            Console.WriteLine("================ FACTURA AGREGADA ================");
+            Console.ReadLine();
         }
         public static void Registrar_Producto()
         {
@@ -210,14 +287,6 @@ namespace Obligatorio
                     precioProducto = Console.ReadLine();
                 }
                 while (precioProducto != string.Empty && !int.TryParse(precioProducto, out preciotemp) && preciotemp > 0);
-
-                string cantidadMemoria;
-                do
-                {
-                    Console.WriteLine("Ingrese el CANTIDAD de la Memoria");
-                    cantidadMemoria = Console.ReadLine();
-                }
-                while (cantidadMemoria != string.Empty);
 
                 Producto NuevoProducto = new Producto();
                 NuevoProducto.Nombre = nombreProducto;
@@ -281,8 +350,17 @@ namespace Obligatorio
             }
             return null;
         }
+
+        public static Producto BuscarIdProducto(string id)
+        {
+            foreach (var i in ListaProductos)
+            {
+                if (i.Id == int.Parse(id))
+                {
+                    return i;
+                }
+            }
+            return null;
+        }
     }
-
-  
-
 }
