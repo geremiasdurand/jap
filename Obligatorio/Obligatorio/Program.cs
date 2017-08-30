@@ -10,13 +10,15 @@ namespace Obligatorio
     {
         static void Main(string[] args)
         {
+            ListaClientes.Add(new Cliente() { CIRUT = 123, Domicilio = "Calle", FechaDeNacimiento = DateTime.Now, Nombre = "Nombre" });
+            ListaProductos.Add(new Producto() { Id = 1, Nombre = "Pan", Marca = "Marca", PrecioPorUnidad = 10 });
             MenuPrincipal();
         }
 
         public static List<Producto> ListaProductos = new List<Producto>();
         public static List<Factura> ListaFacturas = new List<Factura>();
         public static List<Cliente> ListaClientes = new List<Cliente>();
-        public static int IDProducto = 0;
+        public static int IDProducto = 2;
 
         public static void MenuPrincipal()
         {
@@ -35,10 +37,10 @@ namespace Obligatorio
                     else if (Entrada == 2)
                     {
                         MenuListado();
-                    }else if(Entrada == 3)
+                    }
+                    else if(Entrada == 3)
                     {
-                        //para que finalize el programa
-                        Entrada = 1;
+                        Environment.Exit(1);
                     }
                 }
                 while (Entrada != 1 && Entrada != 2);
@@ -56,7 +58,7 @@ namespace Obligatorio
                 do
                 {
                     Console.Clear();
-                    Console.WriteLine("1- Registrar Cliente\n2- Registrar Factura\n3- Registrar Producto\n4-Menu Principal");
+                    Console.WriteLine("1- Registrar Cliente\n2- Registrar Factura\n3- Registrar Producto\n4- Menu Principal");
                     int.TryParse(Console.ReadLine(), out Entrada);
                     switch (Entrada)
                     {
@@ -76,6 +78,8 @@ namespace Obligatorio
 
                 }
                 while (Entrada != 1 && Entrada != 2 && Entrada != 3 && Entrada != 4);
+                Console.ReadLine();
+                MenuPrincipal();
             }
             catch (Exception ex)
             {
@@ -90,7 +94,7 @@ namespace Obligatorio
                 do
                 {
                     Console.Clear();
-                    Console.WriteLine("1- Listar Cliente\n2- Listar Factura\n3- Listar Producto\n4-Menu Principal");
+                    Console.WriteLine("1- Listar Cliente\n2- Listar Factura\n3- Listar Producto\n4- Menu Principal");
                     int.TryParse(Console.ReadLine(), out Entrada);
                     switch (Entrada)
                     {
@@ -149,9 +153,6 @@ namespace Obligatorio
                 }
                 while (!buscar);
 
-                Console.WriteLine("Ingrese el CANTIDAD de la Memoria");
-                string cantidadMemoria = Console.ReadLine();
-
                 string domicilioCliente;
                 do
                 {
@@ -163,7 +164,7 @@ namespace Obligatorio
                 string fechadenacimientoCliente;
                 do
                 {
-                    Console.WriteLine("Ingrese la CI o RUT del Cliente");
+                    Console.WriteLine("Ingrese la FECHA DE NACIMIENTO del Cliente");
                     fechadenacimientoCliente = Console.ReadLine();
                 }
                 while (fechadenacimientoCliente == string.Empty || !DateTime.TryParse(fechadenacimientoCliente, out DateTime fechatemp));
@@ -173,6 +174,8 @@ namespace Obligatorio
                 NuevoCliente.CIRUT = int.Parse(cirutCliente);
                 NuevoCliente.Domicilio = domicilioCliente;
                 NuevoCliente.FechaDeNacimiento = DateTime.Parse(fechadenacimientoCliente);
+                ListaClientes.Add(NuevoCliente);
+                Console.WriteLine("================ CLIENTE AGREGADO ================");
             }
             catch (Exception ex)
             {
@@ -216,29 +219,34 @@ namespace Obligatorio
                 do
                 {
                     Console.WriteLine("Ingrese el ID de los productos");
-                    idproductoFactura = Console.ReadLine();
-                    if (idproductoFactura == string.Empty)
-                    {
-                        salir = true;
-                    }
-                    else
+                    idproductoFactura = IsEmpty(Console.ReadLine());
+                    if (EsNumero(idproductoFactura) < IDProducto && int.Parse(idproductoFactura) !=0)
                     {
                         string cantidad;
-                        int cantidadtemp;
-                        do
-                        {
-                            Console.WriteLine("Ingrese cuantas veces quiere agregar este producto");
-                            cantidad = Console.ReadLine();
-                        }
-                        while (cantidad != string.Empty && !int.TryParse(cantidad, out cantidadtemp) && cantidadtemp > 0);
+                        Console.WriteLine("Ingrese cuantas veces quiere agregar este producto");
+                        cantidad = IsEmpty(Console.ReadLine());
+                        EsNumero(cantidad);
                         Producto ProductoAdd = BuscarIdProducto(idproductoFactura);
-                        if (ProductoAdd != null)
-                        {
                             for (int i = 0; i < int.Parse(cantidad); i++)
                             {
                                 ProductosEnFactura.Add(ProductoAdd);
                             }
+                    }
+                    else if (EsNumero(idproductoFactura) == 0)
+                    {
+                        string pregunta = "";
+                        do
+                        { 
+                            Console.WriteLine("Quiere terminar la operacion?");
+                            pregunta = Console.ReadLine();
+
+                            Console.WriteLine("1 = SI - 2 = NO");
                         }
+                        while (int.Parse(pregunta) != 1 && int.Parse(pregunta) != 2);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ingrese un dato valido");
                     }
                 }
                 while (!salir);
@@ -255,6 +263,7 @@ namespace Obligatorio
                 NuevaFactura.Fecha = fechaFactura;
                 NuevaFactura.MontoTotal = PrecioTotal;
                 NuevaFactura.ListaProductos = ProductosEnFactura;
+                ListaFacturas.Add(NuevaFactura);
                 }
                 
             catch (Exception ex)
@@ -264,6 +273,7 @@ namespace Obligatorio
             }
             Console.WriteLine("================ FACTURA AGREGADA ================");
             Console.ReadLine();
+            MenuPrincipal();
         }
         public static void Registrar_Producto()
         {
@@ -275,7 +285,7 @@ namespace Obligatorio
                     Console.WriteLine("Ingrese el NOMBRE del Producto");
                     nombreProducto = Console.ReadLine();
                 }
-                while (nombreProducto != string.Empty);
+                while (nombreProducto == string.Empty);
 
                 string marcaProducto;
                 do
@@ -283,23 +293,25 @@ namespace Obligatorio
                     Console.WriteLine("Ingrese la MARCA del Producto");
                     marcaProducto = Console.ReadLine();
                 }
-                while (marcaProducto != string.Empty);
+                while (marcaProducto == string.Empty);
 
                 string precioProducto;
-                int preciotemp;
+                int preciotemp = 0;
                 do
                 {
                     Console.WriteLine("Ingrese el PRECIO del Producto");
-                    precioProducto = Console.ReadLine();
+                    precioProducto = IsEmpty(Console.ReadLine());
                 }
-                while (precioProducto != string.Empty && !int.TryParse(precioProducto, out preciotemp) && preciotemp > 0);
+                while (!int.TryParse(precioProducto, out preciotemp) || preciotemp == 0);
 
                 Producto NuevoProducto = new Producto();
                 NuevoProducto.Nombre = nombreProducto;
                 NuevoProducto.Marca = marcaProducto;
-                NuevoProducto.PrecioPorUnidad = int.Parse(precioProducto);
+                NuevoProducto.PrecioPorUnidad = preciotemp;
                 NuevoProducto.Id = IDProducto;
+                ListaProductos.Add(NuevoProducto);
                 IDProducto++;
+
             }
             catch (Exception ex)
             {
@@ -308,6 +320,7 @@ namespace Obligatorio
             }
             Console.WriteLine("================ PRODUCTO AGREGADO ================");
             Console.ReadLine();
+            MenuPrincipal();
         }
 
         public static void Listar_Cliente()
@@ -320,6 +333,8 @@ namespace Obligatorio
             }
             Console.WriteLine("");
             Console.WriteLine("===================================================");
+            Console.ReadLine();
+            MenuPrincipal();
         }
         public static void Listar_Factura()
         {
@@ -338,7 +353,8 @@ namespace Obligatorio
             }
             Console.WriteLine("");
             Console.WriteLine("===================================================");
-
+            Console.ReadLine();
+            MenuPrincipal();
         }
         public static void Listar_Producto()
         {
@@ -350,6 +366,8 @@ namespace Obligatorio
             }
             Console.WriteLine("");
             Console.WriteLine("===================================================");
+            Console.ReadLine();
+            MenuPrincipal();
         }
 
         public static Cliente BuscarCliente(int cirut)
@@ -374,6 +392,27 @@ namespace Obligatorio
                 }
             }
             return null;
+        }
+
+        public static string IsEmpty(string texto)
+        {
+            while (texto == "")
+            {
+                Console.WriteLine("Campo vacio, ingrese un dato");
+                texto = Console.ReadLine();
+            }
+            return texto;
+        }
+
+        public static int EsNumero(string texto)
+        {
+            int numero;
+            while (!int.TryParse(texto, out numero))
+            {
+                Console.WriteLine("Campo vacio, ingrese un dato");
+                texto = Console.ReadLine();
+            }
+            return numero;
         }
     }
 }
