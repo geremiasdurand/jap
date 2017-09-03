@@ -162,12 +162,26 @@ namespace Obligatorio
                 while (domicilioCliente == string.Empty);
 
                 string fechadenacimientoCliente;
+                DateTime fechatemp;
+                Boolean SalirFecha = true;
                 do
                 {
                     Console.WriteLine("Ingrese la FECHA DE NACIMIENTO del Cliente");
                     fechadenacimientoCliente = Console.ReadLine();
+                    if (!String.IsNullOrEmpty(fechadenacimientoCliente) && DateTime.TryParse(fechadenacimientoCliente, out fechatemp))
+                    {
+                        DateTime fechaMayor = new DateTime();
+                        DateTime hoy = DateTime.Now;
+                        fechaMayor.AddDays(hoy.);
+                        fechaMayor.AddYears(hoy.Year);
+                        if ((fechatemp - DateTime.Now) > )
+                        {
+
+                        }
+                    }
+                    
                 }
-                while (fechadenacimientoCliente == string.Empty || !DateTime.TryParse(fechadenacimientoCliente, out DateTime fechatemp));
+                while (!SalirFecha);
 
                 Cliente NuevoCliente = new Cliente();
                 NuevoCliente.Nombre = nombreCliente;
@@ -238,11 +252,14 @@ namespace Obligatorio
                         do
                         { 
                             Console.WriteLine("Quiere terminar la operacion?");
-                            pregunta = Console.ReadLine();
-
                             Console.WriteLine("1 = SI - 2 = NO");
+                            pregunta = Console.ReadLine();
                         }
                         while (int.Parse(pregunta) != 1 && int.Parse(pregunta) != 2);
+                        if (int.Parse(pregunta) == 1)
+                        {
+                            salir = true;
+                        }
                     }
                     else
                     {
