@@ -236,11 +236,10 @@ namespace Obligatorio
                     {
                         string pregunta = "";
                         do
-                        { 
+                        {
                             Console.WriteLine("Quiere terminar la operacion?");
-                            pregunta = Console.ReadLine();
-
                             Console.WriteLine("1 = SI - 2 = NO");
+                            pregunta = Console.ReadLine();
                         }
                         while (int.Parse(pregunta) != 1 && int.Parse(pregunta) != 2);
                     }
