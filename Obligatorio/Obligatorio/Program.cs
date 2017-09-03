@@ -171,6 +171,7 @@ namespace Obligatorio
                     fechadenacimientoCliente = Console.ReadLine();
                     if (!String.IsNullOrEmpty(fechadenacimientoCliente) && DateTime.TryParse(fechadenacimientoCliente, out fecha))
                     {
+                        SalirFecha = true;
                         DateTime hoy = DateTime.Now;
                         TimeSpan resultado = fecha - hoy;
 
