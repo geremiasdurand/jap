@@ -174,6 +174,7 @@ namespace Obligatorio
                         DateTime hoy = DateTime.Now;
                         TimeSpan resultado = fecha - hoy;
 
+                        //-365 porque el total en dias esta negativo, para poder usar numeros positivos
                         if ((resultado.TotalDays / -365) < 18.00)
                         {
                             SalirFecha = false;
