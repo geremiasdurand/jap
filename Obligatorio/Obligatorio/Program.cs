@@ -12,6 +12,7 @@ namespace Obligatorio
         {
             ListaClientes.Add(new Cliente() { CIRUT = 123, Domicilio = "Calle", FechaDeNacimiento = DateTime.Now, Nombre = "Nombre" });
             ListaProductos.Add(new Producto() { Id = 1, Nombre = "Pan", Marca = "Marca", PrecioPorUnidad = 10 });
+
             MenuPrincipal();
         }
 
@@ -162,18 +163,33 @@ namespace Obligatorio
                 while (domicilioCliente == string.Empty);
 
                 string fechadenacimientoCliente;
+                DateTime fecha = DateTime.Now;
+                Boolean SalirFecha = true;
                 do
                 {
                     Console.WriteLine("Ingrese la FECHA DE NACIMIENTO del Cliente");
                     fechadenacimientoCliente = Console.ReadLine();
+                    if (!String.IsNullOrEmpty(fechadenacimientoCliente) && DateTime.TryParse(fechadenacimientoCliente, out fecha))
+                    {
+                        DateTime hoy = DateTime.Now;
+                        TimeSpan resultado = fecha - hoy;
+
+                        //-365 porque el total en dias esta negativo, para poder usar numeros positivos
+                        if ((resultado.TotalDays / -365) < 18.00)
+                        {
+                            SalirFecha = false;
+                            Console.WriteLine("Debe ser mayor de edad");
+                        }
+                    }
+                    
                 }
-                while (fechadenacimientoCliente == string.Empty || !DateTime.TryParse(fechadenacimientoCliente, out DateTime fechatemp));
+                while (!SalirFecha);
 
                 Cliente NuevoCliente = new Cliente();
                 NuevoCliente.Nombre = nombreCliente;
                 NuevoCliente.CIRUT = int.Parse(cirutCliente);
                 NuevoCliente.Domicilio = domicilioCliente;
-                NuevoCliente.FechaDeNacimiento = DateTime.Parse(fechadenacimientoCliente);
+                NuevoCliente.FechaDeNacimiento = fecha;
                 ListaClientes.Add(NuevoCliente);
                 Console.WriteLine("================ CLIENTE AGREGADO ================");
             }
@@ -242,6 +258,10 @@ namespace Obligatorio
                             pregunta = Console.ReadLine();
                         }
                         while (int.Parse(pregunta) != 1 && int.Parse(pregunta) != 2);
+                        if (int.Parse(pregunta) == 1)
+                        {
+                            salir = true;
+                        }
                     }
                     else
                     {
