@@ -12,6 +12,7 @@ namespace Obligatorio
         {
             ListaClientes.Add(new Cliente() { CIRUT = 123, Domicilio = "Calle", FechaDeNacimiento = DateTime.Now, Nombre = "Nombre" });
             ListaProductos.Add(new Producto() { Id = 1, Nombre = "Pan", Marca = "Marca", PrecioPorUnidad = 10 });
+
             MenuPrincipal();
         }
 
@@ -162,21 +163,21 @@ namespace Obligatorio
                 while (domicilioCliente == string.Empty);
 
                 string fechadenacimientoCliente;
-                DateTime fechatemp;
+                DateTime fecha = DateTime.Now;
                 Boolean SalirFecha = true;
                 do
                 {
                     Console.WriteLine("Ingrese la FECHA DE NACIMIENTO del Cliente");
                     fechadenacimientoCliente = Console.ReadLine();
-                    if (!String.IsNullOrEmpty(fechadenacimientoCliente) && DateTime.TryParse(fechadenacimientoCliente, out fechatemp))
+                    if (!String.IsNullOrEmpty(fechadenacimientoCliente) && DateTime.TryParse(fechadenacimientoCliente, out fecha))
                     {
-                        DateTime fechaMayor = new DateTime();
                         DateTime hoy = DateTime.Now;
-                        fechaMayor.AddDays(hoy.);
-                        fechaMayor.AddYears(hoy.Year);
-                        if ((fechatemp - DateTime.Now) > )
-                        {
+                        TimeSpan resultado = fecha - hoy;
 
+                        if ((resultado.TotalDays / -365) < 18.00)
+                        {
+                            SalirFecha = false;
+                            Console.WriteLine("Debe ser mayor de edad");
                         }
                     }
                     
@@ -187,7 +188,7 @@ namespace Obligatorio
                 NuevoCliente.Nombre = nombreCliente;
                 NuevoCliente.CIRUT = int.Parse(cirutCliente);
                 NuevoCliente.Domicilio = domicilioCliente;
-                NuevoCliente.FechaDeNacimiento = DateTime.Parse(fechadenacimientoCliente);
+                NuevoCliente.FechaDeNacimiento = fecha;
                 ListaClientes.Add(NuevoCliente);
                 Console.WriteLine("================ CLIENTE AGREGADO ================");
             }
