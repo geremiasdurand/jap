@@ -76,7 +76,6 @@ namespace Obligatorio
                             MenuPrincipal();
                             break;
                     }
-
                 }
                 while (Entrada != 1 && Entrada != 2 && Entrada != 3 && Entrada != 4);
                 Console.ReadLine();
@@ -115,6 +114,7 @@ namespace Obligatorio
 
                 }
                 while (Entrada != 1 && Entrada != 2 && Entrada != 3 && Entrada != 4);
+                MenuPrincipal();
             }
             catch (Exception ex)
             {
@@ -126,10 +126,11 @@ namespace Obligatorio
         {
             try
             {
+                Console.Clear();
                 string nombreCliente;
                 do
                 {
-                    Console.WriteLine("Ingrese el NOMBRE del Nombre");
+                    Console.WriteLine("Ingrese el NOMBRE del Cliente");
                     nombreCliente = Console.ReadLine();
                 }
                 while (nombreCliente == string.Empty);
@@ -151,6 +152,10 @@ namespace Obligatorio
                             Console.WriteLine("Ya hay un Cliente registrado con esa CI/RUT");
                         }
                     }
+                    else
+                    {
+                        Console.WriteLine("Debe ingresar solo numeros");
+                    }
                 }
                 while (!buscar);
 
@@ -167,7 +172,7 @@ namespace Obligatorio
                 Boolean SalirFecha = true;
                 do
                 {
-                    Console.WriteLine("Ingrese la FECHA DE NACIMIENTO del Cliente");
+                    Console.WriteLine("Ingrese la FECHA DE NACIMIENTO del Cliente. Ej: DD/MM/YYYY");
                     fechadenacimientoCliente = Console.ReadLine();
                     if (!String.IsNullOrEmpty(fechadenacimientoCliente) && DateTime.TryParse(fechadenacimientoCliente, out fecha))
                     {
@@ -179,7 +184,7 @@ namespace Obligatorio
                         if ((resultado.TotalDays / -365) < 18.00)
                         {
                             SalirFecha = false;
-                            Console.WriteLine("Debe ser mayor de edad");
+                            Console.WriteLine("El cliente debe ser mayor de edad");
                         }
                     }
                     
@@ -206,6 +211,7 @@ namespace Obligatorio
         {
             try
             {
+                Console.Clear();
                 DateTime fechaFactura = DateTime.Now;
 
                 Cliente cliente = new Cliente();
@@ -213,7 +219,7 @@ namespace Obligatorio
                 bool buscar = false;
                 do
                 {
-                    Console.WriteLine("Ingrese la CI o RUT del Cliente");
+                    Console.WriteLine("Ingrese la CI o RUT del Cliente \nEscriba 'Listar' para mostrar los clientes");
                     clienteFactura = Console.ReadLine();
                     if (clienteFactura != string.Empty && int.TryParse(clienteFactura, out int clientetemp))
                     {
@@ -227,6 +233,10 @@ namespace Obligatorio
                             Console.WriteLine("No existe un cliente con esa CI/RUT");
                         }
                     }
+                    else if (clienteFactura == "Listar")
+                    {
+                        Listar_Cliente();
+                    }
                 }
                 while (!buscar);
 
@@ -235,19 +245,23 @@ namespace Obligatorio
                 bool salir = false;
                 do
                 {
-                    Console.WriteLine("Ingrese el ID de los productos");
+                    Console.WriteLine("Ingrese el ID de los productos \nEscriba 'Listar' para mostrar los productos \nEscriba '0' para finalizar");
                     idproductoFactura = IsEmpty(Console.ReadLine());
-                    if (EsNumero(idproductoFactura) < IDProducto && int.Parse(idproductoFactura) !=0)
+                    if (idproductoFactura == "Listar")
+                    {
+                        Listar_Producto();
+                    }
+                    else if (EsNumero(idproductoFactura) < IDProducto && int.Parse(idproductoFactura) != 0)
                     {
                         string cantidad;
                         Console.WriteLine("Ingrese cuantas veces quiere agregar este producto");
                         cantidad = IsEmpty(Console.ReadLine());
                         EsNumero(cantidad);
                         Producto ProductoAdd = BuscarIdProducto(idproductoFactura);
-                            for (int i = 0; i < int.Parse(cantidad); i++)
-                            {
-                                ProductosEnFactura.Add(ProductoAdd);
-                            }
+                        for (int i = 0; i < int.Parse(cantidad); i++)
+                        {
+                            ProductosEnFactura.Add(ProductoAdd);
+                        }
                     }
                     else if (EsNumero(idproductoFactura) == 0)
                     {
@@ -299,6 +313,7 @@ namespace Obligatorio
         {
             try
             {
+                Console.Clear();
                 string nombreProducto;
                 do
                 {
@@ -354,7 +369,6 @@ namespace Obligatorio
             Console.WriteLine("");
             Console.WriteLine("===================================================");
             Console.ReadLine();
-            MenuPrincipal();
         }
         public static void Listar_Factura()
         {
@@ -374,7 +388,6 @@ namespace Obligatorio
             Console.WriteLine("");
             Console.WriteLine("===================================================");
             Console.ReadLine();
-            MenuPrincipal();
         }
         public static void Listar_Producto()
         {
@@ -387,7 +400,6 @@ namespace Obligatorio
             Console.WriteLine("");
             Console.WriteLine("===================================================");
             Console.ReadLine();
-            MenuPrincipal();
         }
 
         public static Cliente BuscarCliente(int cirut)
@@ -418,7 +430,7 @@ namespace Obligatorio
         {
             while (texto == "")
             {
-                Console.WriteLine("Campo vacio, ingrese un dato");
+                Console.WriteLine("Debe ingresar un dato");
                 texto = Console.ReadLine();
             }
             return texto;
@@ -429,7 +441,7 @@ namespace Obligatorio
             int numero;
             while (!int.TryParse(texto, out numero))
             {
-                Console.WriteLine("Campo vacio, ingrese un dato");
+                Console.WriteLine("Debe ingresar un numero");
                 texto = Console.ReadLine();
             }
             return numero;
