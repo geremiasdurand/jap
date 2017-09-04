@@ -10,16 +10,13 @@ namespace Obligatorio
     {
         static void Main(string[] args)
         {
-            ListaClientes.Add(new Cliente() { CIRUT = 123, Domicilio = "Calle", FechaDeNacimiento = DateTime.Now, Nombre = "Nombre" });
-            ListaProductos.Add(new Producto() { Id = 1, Nombre = "Pan", Marca = "Marca", PrecioPorUnidad = 10 });
-
             MenuPrincipal();
         }
 
         public static List<Producto> ListaProductos = new List<Producto>();
         public static List<Factura> ListaFacturas = new List<Factura>();
         public static List<Cliente> ListaClientes = new List<Cliente>();
-        public static int IDProducto = 2;
+        public static int IDProducto = 1;
 
         public static void MenuPrincipal()
         {
